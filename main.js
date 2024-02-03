@@ -1,0 +1,30 @@
+const { app, BrowserWindow, Menu } = require('electron');
+const path = require('node:path')
+
+const createWindow = () => {
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
+  })
+
+  win.loadFile('index.html')
+}
+
+
+app.whenReady().then(() => {
+  createWindow()
+});
+
+//add option for mac to prevent the app from closing 
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit()
+})
+
+
+
+
+
+
