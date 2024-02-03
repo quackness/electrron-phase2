@@ -31,3 +31,4 @@ app.on('window-all-closed', () => {
 
 
 
+//source: https://www.electronjs.org/docs/latest/tutorial/quick-start
