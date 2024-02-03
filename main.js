@@ -10,7 +10,8 @@ const createWindow = () => {
     }
   })
 
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('index.html');
+  mainWindow.webContents.openDevTools();
 }
 
 
