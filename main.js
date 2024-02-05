@@ -58,68 +58,6 @@ Menu.setApplicationMenu(menu)
 
 
 
-
-
-// const template = [
-//   {
-//     label: app.name,
-//     submenu: [
-//       { role: 'about' },
-//       { type: 'separator' },
-//       { role: 'services' },
-//       { type: 'separator' },
-//       { role: 'hide' },
-//       { role: 'hideOthers' },
-//       { role: 'unhide' },
-//       { type: 'separator' },
-//       { role: 'quit' }
-//     ]
-//   },
-//   {
-//     label: 'View',
-//     submenu: [
-//       {
-//         label: 'Watch Video',
-//         click: async () => {
-//           const { shell } = require('electron')
-//           await shell.openExternal('https://electronjs.org')
-//         }
-//       },
-//       {
-//         label: 'About us',
-//         click: async () => {
-//           const { shell } = require('electron')
-//           await shell.openExternal('https://karolinaredden.000webhostapp.com/')
-//         }
-//       },
-//       {
-//         label: 'Start the camera'
-//       }
-//     ]
-//   },
-//   {
-//     label: 'Window',
-//     submenu: [
-//       { role: 'minimize' },
-//       { role: 'zoom' },
-//     ]
-//   },
-//   {
-//     label: 'Help',
-//     submenu: [
-//       {
-//         label: 'Contact us',
-
-//       },
-//     ]
-//   }
-// ];
-
-// const menu = Menu.buildFromTemplate(template)
-// Menu.setApplicationMenu(menu)
-
-
-
 //add option for mac to prevent the app from closing 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
