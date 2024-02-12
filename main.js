@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, dialog } = require('electron');
 const path = require('node:path');
 
 const createWindow = () => {
@@ -39,7 +39,23 @@ const template = [
       {
         label: 'Video',
         submenu: [
-          { label: 'Load...' }
+          {
+            label: 'Load...',
+            click(event, parentWindow) {
+              let dialogOptions = {
+                title: "File dialog",
+                defaultPath: __dirname
+              };
+              dialog.showOpenDialog(isMac ? null : parentWindow, dialogOptions).then((fileInfo) => {
+                console.log(fileInfo);
+                if (fileInfo.canceled) {
+                  console.log('Canceled');
+                } else {
+                  console.log(`User selected: ${fileInfo.filePaths[0]}`)
+                }
+              })
+            }
+          }
         ]
       },
       { type: 'separator' },
