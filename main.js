@@ -42,7 +42,7 @@ const template = [
               let dialogOptions = {
                 title: "File dialog",
                 defaultPath: __dirname,
-                filters: [{ name: 'Video file', extensions: ['.mp4', '.avi', 'mov', 'wmv'] }]
+                filters: [{ name: 'Video file', extensions: ['.mp4', '.avi', '.mov', '.wmv'] }]
               };
               dialog.showOpenDialog(isMac ? null : parentWindow, dialogOptions).then((fileInfo) => {
                 console.log(fileInfo);

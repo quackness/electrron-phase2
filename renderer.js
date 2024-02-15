@@ -1,4 +1,4 @@
-// const { ipcRenderer } = require('electron');
+const { ipcRenderer } = require('electron');
 
 //https://www.electronjs.org/docs/latest/tutorial/quick-start#access-nodejs-from-the-renderer-with-a-preload-script
 window.addEventListener('DOMContentLoaded', () => {
@@ -14,8 +14,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 ipcRenderer.on('video-selected', (event, path) => {
   console.log(path)
-  console.log(path.split('/').pop())
-  const videoSrc = path.split('/').pop();
+  // console.log(path.split('/').pop())
+  const videoSrc = path;
   document.querySelector('#videoSource').src = videoSrc;
   document.querySelector(".js-player").load();
 })
