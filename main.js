@@ -22,7 +22,8 @@ const createWindow = () => {
 
 const isMac = process.platform === 'darwin'
 
-
+let uploaded = false;
+const arr = ["1", "2", "3"];
 const template = [
   ...(isMac
     ? [{
@@ -50,11 +51,33 @@ const template = [
                   console.log('Canceled');
                 } else {
                   console.log(`User selected: ${fileInfo.filePaths[0]}`)
+                  console.log("1", uploaded);
+                  // uploaded = true;
+                  //https://stackoverflow.com/questions/47756822/change-electrons-menu-items-status-dynamically
+                  arr.map((item) => { menu.getMenuItemById(item).enabled = true });
                   mainWindow.webContents.send('video-selected', fileInfo.filePaths[0]);
+                  console.log("2", uploaded);
                 }
               })
             }
+          },
+          { type: 'separator' },
+          {
+            id: "1",
+            label: 'Convert to AVI...',
+            enabled: uploaded,
+          },
+          {
+            id: "2",
+            label: 'Convert to MP4...',
+            enabled: uploaded,
+          },
+          {
+            id: "3",
+            label: 'Convert to WEBM...',
+            enabled: uploaded,
           }
+
         ]
       },
       { type: 'separator' },
@@ -67,7 +90,7 @@ const template = [
       { role: 'toggleDevTools' },
     ]
   }];
-
+console.log("2???", uploaded);
 const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
 

@@ -18,6 +18,7 @@ ipcRenderer.on('video-selected', (event, path) => {
   const videoSrc = path;
   document.querySelector('#videoSource').src = videoSrc;
   document.querySelector(".js-player").load();
+  //create event lisetner ....
 })
 
 
