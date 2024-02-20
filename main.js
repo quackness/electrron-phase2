@@ -23,7 +23,7 @@ const createWindow = () => {
 const isMac = process.platform === 'darwin'
 
 let uploaded = false;
-const arr = ["1", "2", "3"];
+const arr = ["avi", "mp4", "webm"];
 const template = [
   ...(isMac
     ? [{
@@ -63,17 +63,17 @@ const template = [
           },
           { type: 'separator' },
           {
-            id: "1",
+            id: "avi",
             label: 'Convert to AVI...',
             enabled: uploaded,
           },
           {
-            id: "2",
+            id: "mp4",
             label: 'Convert to MP4...',
             enabled: uploaded,
           },
           {
-            id: "3",
+            id: "webm",
             label: 'Convert to WEBM...',
             enabled: uploaded,
           }
