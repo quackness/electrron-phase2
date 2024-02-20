@@ -23,7 +23,7 @@ const createWindow = () => {
 const isMac = process.platform === 'darwin'
 
 let uploaded = false;
-const arr = ["avi", "mp4", "webm"];
+const videoFormats = ["avi", "mp4", "webm"];
 const template = [
   ...(isMac
     ? [{
@@ -54,7 +54,7 @@ const template = [
                   console.log("1", uploaded);
                   // uploaded = true;
                   //https://stackoverflow.com/questions/47756822/change-electrons-menu-items-status-dynamically
-                  arr.map((item) => { menu.getMenuItemById(item).enabled = true });
+                  videoFormats.map((item) => { menu.getMenuItemById(item).enabled = true });
                   mainWindow.webContents.send('video-selected', fileInfo.filePaths[0]);
                   console.log("2", uploaded);
                 }
