@@ -1,11 +1,18 @@
 const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron');
-var ffmpeg = require('fluent-ffmpeg');
-var command = ffmpeg();
-var ffmpeg = require('ffmpeg-static-electron');
+var fluent = require('fluent-ffmpeg');
+// var command = new FfmpegCommand();
+const ffmpeg = require('ffmpeg-static-electron');
 console.log(ffmpeg.path);
-var ffprobe = require('ffprobe-static-electron');
+const ffprobe = require('ffprobe-static-electron');
 console.log(ffprobe.path);
 const path = require('node:path');
+
+//tell fluent that we have static installs 
+console.log(fluent)
+fluent.setFfmpegPath(ffmpeg);
+fluent.setFfprobePath(ffprobe.path)
+
+
 let mainWindow;
 
 const createWindow = () => {
@@ -52,7 +59,7 @@ const template = [
                 filters: [{ name: 'Video file', extensions: ['.mp4', '.avi', '.mov', '.wmv'] }]
               };
               dialog.showOpenDialog(isMac ? null : parentWindow, dialogOptions).then((fileInfo) => {
-                console.log(fileInfo);
+                console.log("open dialog", fileInfo);
                 if (fileInfo.canceled) {
                   console.log('Canceled');
                 } else {
@@ -71,12 +78,36 @@ const template = [
           {
             id: "avi",
             label: 'Convert to AVI...',
+            click(event, parentWindow) {
+              console.log(event)
+              // console.log(event)
+              let dialogOptions = {
+                title: "File save",
+                defaultPath: __dirname,
+              };
+              dialog.showSaveDialog(isMac ? null : parentWindow, dialogOptions).then((file) => {
+                console.log(">>", file)
+                // let test = file.path
+                if (file.canceled) {
+                  // console.log("test")
+                  // console.log(file);
+                  // let command = ffmpeg({ source: file.filePath });
+                  console.log("Cancelled")
+                  return
+                  // fluent(file.filePath).format('.avi').save(__dirname + '/samp.avi');
+                } else {
+
+                  fluent(file.path).format('avi').save(__dirname + '/samp.avi');
+
+                }
+              });
+            },
             enabled: uploaded,
           },
           {
             id: "mp4",
             label: 'Convert to MP4...',
-            enabled: uploaded,
+            enabled: uploaded
           },
           {
             id: "webm",
@@ -114,5 +145,4 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
-
 
