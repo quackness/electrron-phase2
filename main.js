@@ -1,4 +1,10 @@
 const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron');
+var ffmpeg = require('fluent-ffmpeg');
+var command = ffmpeg();
+var ffmpeg = require('ffmpeg-static-electron');
+console.log(ffmpeg.path);
+var ffprobe = require('ffprobe-static-electron');
+console.log(ffprobe.path);
 const path = require('node:path');
 let mainWindow;
 
