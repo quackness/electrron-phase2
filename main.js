@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron');
-var fluent = require('fluent-ffmpeg');
-// var command = new FfmpegCommand();
+const fluent = require('fluent-ffmpeg');
+// const command = fluent();
 const ffmpeg = require('ffmpeg-static-electron');
 console.log(ffmpeg.path);
 const ffprobe = require('ffprobe-static-electron');
@@ -14,7 +14,8 @@ fluent.setFfprobePath(ffprobe.path)
 
 
 let mainWindow;
-
+let clickedAvi = false;
+let originFile = '';
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1000,
@@ -68,8 +69,14 @@ const template = [
                   // uploaded = true;
                   //https://stackoverflow.com/questions/47756822/change-electrons-menu-items-status-dynamically
                   videoFormats.map((item) => { menu.getMenuItemById(item).enabled = true });
-                  mainWindow.webContents.send('video-selected', fileInfo.filePaths[0]);
+                  originFile = fileInfo.filePaths[0];
+                  mainWindow.webContents.send('video-selected', originFile);
                   console.log("2", uploaded);
+                  //fluent(fileInfo.filePaths[0]).format('avi').save(__dirname + '/test.avi');
+                  // if (clickedAvi) {
+                  //   console.log("clicked")
+                  //   fluent(fileInfo.filePaths[0]).format('avi').save(__dirname + '/samp.avi');
+                  // }
                 }
               })
             }
@@ -85,22 +92,37 @@ const template = [
                 title: "File save",
                 defaultPath: __dirname,
               };
-              dialog.showSaveDialog(isMac ? null : parentWindow, dialogOptions).then((file) => {
-                console.log(">>", file)
+              dialog.showSaveDialog(isMac ? null : parentWindow, dialogOptions).then((fileData) => {
+                console.log("file object from showsaveDialog", fileData)
+                console.log("canceled?", fileData.canceled)
+                console.log("originfile", originFile)
                 // let test = file.path
-                if (file.canceled) {
-                  // console.log("test")
-                  // console.log(file);
-                  // let command = ffmpeg({ source: file.filePath });
-                  console.log("Cancelled")
+                if (fileData.canceled) {
+                  console.log("Canceled")
                   return
-                  // fluent(file.filePath).format('.avi').save(__dirname + '/samp.avi');
                 } else {
-
-                  fluent(file.path).format('avi').save(__dirname + '/samp.avi');
-
+                  console.log("Hello!")
+                  // console.log(fluent)
+                  console.log(originFile);
+                  console.log(JSON.stringify(originFile));
+                  originFile = JSON.stringify(originFile);
+                  console.log("type of:", typeof originFile);
+                  console.log("dirname", typeof __dirname)
+                  if (typeof originFile === "string") {
+                    fluent(originFile).toFormat('avi')
+                      .on('error', function (err) {
+                        console.log('An error occurred: ' + err.message);
+                      })
+                      .on('end', function () {
+                        console.log('Processing finished !');
+                      })
+                      .saveToFile('/Users/karolinadubaj/nscc/cross-platform/assignment-2.1-quackness/testing.avi');
+                  }
                 }
-              });
+              })
+                .catch((err) => {
+                  console.error(err);
+                });
             },
             enabled: uploaded,
           },
