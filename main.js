@@ -1,4 +1,5 @@
 const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron');
+const ProgressBar = require('electron-progressbar');
 const fluent = require('fluent-ffmpeg');
 // const command = fluent();
 const ffmpeg = require('ffmpeg-static-electron');
@@ -73,11 +74,6 @@ const template = [
                   originFile = fileInfo.filePaths[0];
                   mainWindow.webContents.send('video-selected', originFile);
                   console.log("2", uploaded);
-                  //fluent(fileInfo.filePaths[0]).format('avi').save(__dirname + '/test.avi');
-                  // if (clickedAvi) {
-                  //   console.log("clicked")
-                  //   fluent(fileInfo.filePaths[0]).format('avi').save(__dirname + '/samp.avi');
-                  // }
                 }
               })
             }
@@ -94,30 +90,14 @@ const template = [
                 defaultPath: __dirname,
               };
               dialog.showSaveDialog(isMac ? null : parentWindow, dialogOptions).then((fileData) => {
-                console.log("file object from showsaveDialog", fileData)
-                console.log("canceled?", fileData.canceled)
-                console.log("originfile", originFile)
-                // let test = file.path
                 if (fileData.canceled) {
                   console.log("Canceled")
                   return
                 } else {
-                  // console.log("Hello!")
-                  // console.log(fluent)
                   console.log(originFile);
-                  console.log(JSON.stringify(originFile));
-                  originFile = JSON.stringify(originFile);
-                  console.log("type of:", typeof originFile);
-                  console.log("dirname", typeof __dirname)
                   if (typeof originFile === "string") {
-                    fluent('/Users/karolinadubaj/nscc/cross-platform/assignment-2.1-quackness/sample.mp4').toFormat('avi')
-                      // .on('error', function (err) {
-                      //   console.log('An error occurred: ' + err.message);
-                      // })
-                      // .on('end', function () {
-                      //   console.log('Processing finished !');
-                      // })
-                      .output('/Users/karolinadubaj/nscc/cross-platform/assignment-2.1-quackness/testing.avi')
+                    fluent(originFile).toFormat('avi')
+                      .output(__dirname + '/testing.avi')
                       .run();
                   }
                 }
@@ -131,12 +111,60 @@ const template = [
           {
             id: "mp4",
             label: 'Convert to MP4...',
+            click(event, parentWindow) {
+              console.log(event)
+              // console.log(event)
+              let dialogOptions = {
+                title: "File save",
+                defaultPath: __dirname,
+              };
+              dialog.showSaveDialog(isMac ? null : parentWindow, dialogOptions).then((fileData) => {
+                if (fileData.canceled) {
+                  console.log("Canceled")
+                  return
+                } else {
+                  console.log(originFile);
+                  if (typeof originFile === "string") {
+                    fluent(originFile).toFormat('mp4')
+                      .output(__dirname + '/testing.mp4')
+                      .run();
+                  }
+                }
+              })
+                .catch((err) => {
+                  console.error(err);
+                });
+            },
             enabled: uploaded
           },
           {
             id: "webm",
             label: 'Convert to WEBM...',
             enabled: uploaded,
+            click(event, parentWindow) {
+              console.log(event)
+              // console.log(event)
+              let dialogOptions = {
+                title: "File save",
+                defaultPath: __dirname,
+              };
+              dialog.showSaveDialog(isMac ? null : parentWindow, dialogOptions).then((fileData) => {
+                if (fileData.canceled) {
+                  console.log("Canceled")
+                  return
+                } else {
+                  console.log(originFile);
+                  if (typeof originFile === "string") {
+                    fluent(originFile).toFormat('webm')
+                      .output(__dirname + '/testing.webm')
+                      .run();
+                  }
+                }
+              })
+                .catch((err) => {
+                  console.error(err);
+                });
+            },
           }
 
         ]
@@ -160,8 +188,9 @@ app.whenReady().then(() => {
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
+  });
 });
+
 
 
 
