@@ -9,7 +9,8 @@ const path = require('node:path');
 
 //tell fluent that we have static installs 
 console.log(fluent)
-fluent.setFfmpegPath(ffmpeg);
+console.log(ffmpeg)
+fluent.setFfmpegPath(ffmpeg.path);
 fluent.setFfprobePath(ffprobe.path)
 
 
@@ -101,7 +102,7 @@ const template = [
                   console.log("Canceled")
                   return
                 } else {
-                  console.log("Hello!")
+                  // console.log("Hello!")
                   // console.log(fluent)
                   console.log(originFile);
                   console.log(JSON.stringify(originFile));
@@ -109,14 +110,15 @@ const template = [
                   console.log("type of:", typeof originFile);
                   console.log("dirname", typeof __dirname)
                   if (typeof originFile === "string") {
-                    fluent(originFile).toFormat('avi')
-                      .on('error', function (err) {
-                        console.log('An error occurred: ' + err.message);
-                      })
-                      .on('end', function () {
-                        console.log('Processing finished !');
-                      })
-                      .saveToFile('/Users/karolinadubaj/nscc/cross-platform/assignment-2.1-quackness/testing.avi');
+                    fluent('/Users/karolinadubaj/nscc/cross-platform/assignment-2.1-quackness/sample.mp4').toFormat('avi')
+                      // .on('error', function (err) {
+                      //   console.log('An error occurred: ' + err.message);
+                      // })
+                      // .on('end', function () {
+                      //   console.log('Processing finished !');
+                      // })
+                      .output('/Users/karolinadubaj/nscc/cross-platform/assignment-2.1-quackness/testing.avi')
+                      .run();
                   }
                 }
               })
