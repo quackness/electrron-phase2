@@ -96,7 +96,10 @@ const template = [
                 } else {
                   console.log(originFile);
                   if (typeof originFile === "string") {
+
                     fluent(originFile).toFormat('avi')
+                      .on('end', () => { console.log("Finished!") })
+                      .on('progress', (timemark) => { console.log(timemark.percent) })
                       .output(__dirname + '/testing.avi')
                       .run();
                   }
