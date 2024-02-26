@@ -90,17 +90,38 @@ const template = [
                 defaultPath: __dirname,
               };
               dialog.showSaveDialog(isMac ? null : parentWindow, dialogOptions).then((fileData) => {
+                //
                 if (fileData.canceled) {
                   console.log("Canceled")
                   return
                 } else {
+                  // Extracting the file name from the path
+                  const fileName = path.basename(fileData.filePath);
+                  console.log("File name:", fileName);
                   console.log(originFile);
                   if (typeof originFile === "string") {
-
+                    const progressBar = new ProgressBar({
+                      indeterminate: false,
+                      text: 'Preparing data...',
+                      title: 'My progress...'
+                    });
                     fluent(originFile).toFormat('avi')
-                      .on('end', () => { console.log("Finished!") })
-                      .on('progress', (timemark) => { console.log(timemark.percent) })
-                      .output(__dirname + '/testing.avi')
+                      .on('end', () => {
+                        console.log("File converted!")
+                        progressBar.close();
+                      })
+                      .on('error', (err) => {
+                        console.error('Error:', err);
+                        progressBar.close();
+                      })
+                      .on('progress', (data) => {
+                        // console.log("progress")
+                        console.log(data.percent)
+                        // console.log(progressBar)
+                        progressBar.detail = `Value ${progressBar.value} out of ${progressBar.getOptions().maxValue}...`;
+                        progressBar.value = data.percent
+                      })
+                      .output(__dirname + `/${fileName}.avi`)
                       .run();
                   }
                 }
@@ -122,14 +143,35 @@ const template = [
                 defaultPath: __dirname,
               };
               dialog.showSaveDialog(isMac ? null : parentWindow, dialogOptions).then((fileData) => {
+                const fileName = path.basename(fileData.filePath);
                 if (fileData.canceled) {
                   console.log("Canceled")
                   return
                 } else {
                   console.log(originFile);
+                  const progressBar = new ProgressBar({
+                    indeterminate: false,
+                    text: 'Preparing data...',
+                    title: 'My progress...'
+                  });
                   if (typeof originFile === "string") {
                     fluent(originFile).toFormat('mp4')
-                      .output(__dirname + '/testing.mp4')
+                      .on('end', () => {
+                        console.log("File converted!")
+                        progressBar.close();
+                      })
+                      .on('error', (err) => {
+                        console.error('Error:', err);
+                        progressBar.close();
+                      })
+                      .on('progress', (data) => {
+                        // console.log("progress")
+                        console.log(data.percent)
+                        // console.log(progressBar)
+                        progressBar.detail = `Value ${progressBar.value} out of ${progressBar.getOptions().maxValue}...`;
+                        progressBar.value = data.percent
+                      })
+                      .output(__dirname + `/${fileName}.mp4`)
                       .run();
                   }
                 }
@@ -156,12 +198,29 @@ const template = [
                   console.log("Canceled")
                   return
                 } else {
-                  console.log(originFile);
-                  if (typeof originFile === "string") {
-                    fluent(originFile).toFormat('webm')
-                      .output(__dirname + '/testing.webm')
-                      .run();
-                  }
+                  const fileName = path.basename(fileData.filePath);
+                  const progressBar = new ProgressBar({
+                    indeterminate: false,
+                    text: 'Preparing data...',
+                    title: 'My progress...'
+                  });
+                  fluent(originFile).toFormat('webm')
+                    .on('end', () => {
+                      console.log("File converted!")
+                      progressBar.close();
+                    })
+                    .on('error', (err) => {
+                      console.error('Error:', err);
+                      progressBar.close();
+                    })
+                    .on('progress', (data) => {
+                      // console.log("progress")
+                      // console.log(data)
+                      // console.log(progressBar)
+                      progressBar.value = data.percent
+                    })
+                    .output(__dirname + '/testing.webm')
+                    .run();
                 }
               })
                 .catch((err) => {
@@ -193,6 +252,8 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   });
 });
+
+
 
 
 

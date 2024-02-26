@@ -21,4 +21,8 @@ ipcRenderer.on('video-selected', (event, path) => {
   //create event lisetner ....
 })
 
+// ipcRenderer.on('conversion:progress', (event, percent) => {
+//   console.log(percent)
+// })
+
 
