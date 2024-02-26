@@ -118,7 +118,7 @@ const template = [
                         // console.log("progress")
                         console.log(data.percent)
                         // console.log(progressBar)
-                        progressBar.detail = `Value ${progressBar.value} out of ${progressBar.getOptions().maxValue}...`;
+                        progressBar.detail = `Converted ${parseInt(progressBar.value)} out of ${progressBar.getOptions().maxValue}...`;
                         progressBar.value = data.percent
                       })
                       .output(__dirname + `/${fileName}.avi`)
@@ -168,7 +168,7 @@ const template = [
                         // console.log("progress")
                         console.log(data.percent)
                         // console.log(progressBar)
-                        progressBar.detail = `Value ${progressBar.value} out of ${progressBar.getOptions().maxValue}...`;
+                        progressBar.detail = `Converted ${parseInt(progressBar.value)} out of ${progressBar.getOptions().maxValue}...`;
                         progressBar.value = data.percent
                       })
                       .output(__dirname + `/${fileName}.mp4`)
