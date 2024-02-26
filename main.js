@@ -187,8 +187,6 @@ const template = [
             label: 'Convert to WEBM...',
             enabled: uploaded,
             click(event, parentWindow) {
-              console.log(event)
-              // console.log(event)
               let dialogOptions = {
                 title: "File save",
                 defaultPath: __dirname,
@@ -214,9 +212,6 @@ const template = [
                       progressBar.close();
                     })
                     .on('progress', (data) => {
-                      // console.log("progress")
-                      // console.log(data)
-                      // console.log(progressBar)
                       progressBar.value = data.percent
                     })
                     .output(__dirname + '/testing.webm')
