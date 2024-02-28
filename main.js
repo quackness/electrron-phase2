@@ -16,7 +16,6 @@ fluent.setFfprobePath(ffprobe.path)
 
 
 let mainWindow;
-let clickedAvi = false;
 let originFile = '';
 const createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -31,7 +30,7 @@ const createWindow = () => {
   })
 
   mainWindow.loadFile('index.html');
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   // const contents = mainWindow.webContents
   // console.log("Content", contents)
 }
@@ -46,7 +45,6 @@ const template = [
       label: app.name,
     }]
     : []),
-  // { role: 'fileMenu' }
   {
     label: 'File',
     submenu: [
@@ -59,7 +57,7 @@ const template = [
               let dialogOptions = {
                 title: "File dialog",
                 defaultPath: __dirname,
-                filters: [{ name: 'Video file', extensions: ['.mp4', '.avi', '.mov', '.wmv'] }]
+                filters: [{ name: 'Video file', extensions: ['.mp4', '.avi', '.mov', '.wmv', '.webm'] }]
               };
               dialog.showOpenDialog(isMac ? null : parentWindow, dialogOptions).then((fileInfo) => {
                 console.log("open dialog", fileInfo);
@@ -212,9 +210,11 @@ const template = [
                       progressBar.close();
                     })
                     .on('progress', (data) => {
+                      console.log(data.percent)
+                      progressBar.detail = `Converted ${parseInt(progressBar.value)} out of ${progressBar.getOptions().maxValue}...`;
                       progressBar.value = data.percent
                     })
-                    .output(__dirname + '/testing.webm')
+                    .output(__dirname + `/${fileName}.webm`)
                     .run();
                 }
               })
